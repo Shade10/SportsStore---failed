@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
+using SportsStore.Domain.Entities;
 using SportsStore.WebUI.Models;
 
 
@@ -11,6 +12,8 @@ namespace SportsStore.WebUI.Controllers {
     public class ProductController : Controller {
         private IProductRepository repository;
         public int PageSize = 4;
+
+        //http://hck.re/jnp1
 
         public ProductController(IProductRepository productRepository) {
             this.repository = productRepository;
@@ -26,7 +29,9 @@ namespace SportsStore.WebUI.Controllers {
                 PagingIfno = new PagingIfno {
                     CurrentPage = page,
                     ItemPerPage = PageSize,
-                    TotalItems = repository.Products.Count()
+                    TotalItems = category == null ?
+                    repository.Products.Count() :
+                    repository.Products.Where(e => e.Category == category).Count()
                 },
                 CurrentCategory = category
             };
